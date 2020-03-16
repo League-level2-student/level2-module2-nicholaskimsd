@@ -8,7 +8,7 @@ class Segment {
 //Add x and y member variables. They will hold the corner location of each segment of the snake.
 int x;
 int y;
-
+ArrayList<Segment> tail = new ArrayList <Segment>();
 // Add a constructor with parameters to initialize each variable.
 Segment(int x, int y){
    this.x = x;
@@ -29,6 +29,8 @@ int foodX;
 int foodY;
 int direction = UP;
 int piecesOfFood = 0;
+int speed = 10;
+
 
 
 
@@ -88,19 +90,39 @@ void drawSnake() {
 
 void drawTail() {
   //Draw each segment of the tail 
+ for(int i = 0; i < tail.size(); i++){
+      rect(tail.get(i).x, tail.get(i).y, 10, 10);
+    }
+}
+
+
 
 }
 
 void manageTail() {
   //After drawing the tail, add a new segment at the "start" of the tail and remove the one at the "end" 
   //This produces the illusion of the snake tail moving.
-  
+  void manageTail() {
+
+ 
+drawTail();
+checkTailCollision();
+
+
+tail.add(new Segment(head.x, head.y));
+
+
+
+  while(tail.size() > piecesFood){
+    tail.remove(0);
 }
 
 void checkTailCollision() {
   //If the snake crosses its own tail, shrink the tail back to one segment
+
+  }
   
-}
+
 
 
 
@@ -111,17 +133,17 @@ void checkTailCollision() {
 
 void keyPressed() {
   //Set the direction of the snake according to the arrow keys pressed
-  if(key == UP&&direction != DOWN){
+  if(keyCode == UP&&direction != DOWN){
    direction = UP; 
-   
+   println("up");
   }
-  if(key == DOWN&&direction !=UP){
+  if(keyCode == DOWN&&direction !=UP){
    direction = DOWN; 
   }
-  if(key == LEFT&&direction !=RIGHT){
+  if(keyCode == LEFT&&direction !=RIGHT){
    direction = LEFT; 
   }
-  if(key == RIGHT&&direction !=LEFT){
+  if(keyCode == RIGHT&&direction !=LEFT){
    direction = RIGHT; 
   }
 }
@@ -133,16 +155,17 @@ void move() {
   switch(direction) {
   case UP:
     // move head up here 
-    head.y--;
+    
+    head.y-=speed;
     break;
   case DOWN:
-    head.y++;
+    head.y+=speed;
     break;
   case LEFT:
-  head.x--;
+  head.x-=speed;
     break;
   case RIGHT:
-    head.x++;
+    head.x+=speed;
     break;
   }
   checkBoundaries();
